@@ -1,0 +1,16 @@
+<odoo>
+    <data>
+        <record id="estate_property_view_filter" model="ir.ui.view">
+            <field name="name">estate.property.search</field>
+            <field name="model">estate.property</field>
+            <field name="arch" type="xml">
+                <search string="Search Property">
+                    <field name="name" />
+                    <field name="postal_code" />
+                    <field name="rooms" />
+                    <field name="selling_price" />
+                </search>
+            </field>
+        </record>
+    </data>
+</odoo>

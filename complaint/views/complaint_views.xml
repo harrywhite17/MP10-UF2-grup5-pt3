@@ -1,0 +1,9 @@
+<?xml version = "1.0"?>
+
+<odoo>
+    <record id = "complaint_form_view" model = "ir.actions.act_window">
+        <field name="name">Reclamacions</field>
+        <field name="res_model">complaint.message</field>
+        <field name="view_mode">list,form</field>
+    </record>
+</odoo>

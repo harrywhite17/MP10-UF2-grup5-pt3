@@ -1,0 +1,16 @@
+# Ignorar la carpeta de configuración de VS Code
+.vscode/
+
+# Archivos y carpetas de Python innecesarios
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Dependencias virtuales (si usas venv)
+venv/
+env/
+
+# Archivos de configuración de entornos o dependencias
+.env
+.DS_Store

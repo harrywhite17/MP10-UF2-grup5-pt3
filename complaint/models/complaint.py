@@ -38,7 +38,6 @@ class Complaint(models.Model):
         for rec in self:
             rec.delivery_count = len(rec.order_id.picking_ids)
 
-    # 👉 Aquí afegeixes la funció d'acció per cancel·lar el tiquet
     def action_cancel(self):
         for rec in self:
             if not rec.reason_id:

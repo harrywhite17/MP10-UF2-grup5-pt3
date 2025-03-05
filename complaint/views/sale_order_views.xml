@@ -1,7 +1,7 @@
 <record id="view_order_form_inherit_complaint" model="ir.ui.view">
     <field name="name">sale.order.form.inherit.complaint</field>
     <field name="model">sale.order</field>
-    <field name="inherit_id" ref="sale.view_order_form"/>
+    <field name="inherit_id" ref="sale.view_order_form" />
     <field name="arch" type="xml">
         <!-- Smart Button -->
         <xpath expr="//sheet" position="before">
@@ -19,9 +19,9 @@
             <page string="Reclamacions">
                 <field name="complaint_ids">
                     <tree editable="bottom">
-                        <field name="name"/>
-                        <field name="state"/>
-                        <field name="create_date"/>
+                        <field name="name" />
+                        <field name="state" />
+                        <field name="create_date" />
                     </tree>
                 </field>
             </page>

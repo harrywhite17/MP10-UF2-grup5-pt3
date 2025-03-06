@@ -1,4 +1,5 @@
 <odoo>
+    <menuitem id="menu_complaint_root" name="Reclamacions" sequence="10"/>
     <record id="complaint_action" model="ir.actions.act_window">
         <field name="name">Reclamacions</field>
         <field name="res_model">complaint.complaint</field>
@@ -11,7 +12,8 @@
         <field name="arch" type="xml">
             <form string="Complaint">
                 <header>
-                    <field name="state" widget="statusbar" statusbar_visible="draft,open,closed"/>
+                    <field name="state" widget="statusbar" statusbar_visible="new,in_progress,closed,cancelled"/>
+                    <button name="action_reopen" string="Reobrir" type="object" invisible_when="state not in ('closed', 'cancelled')"/>
                 </header>
                 <sheet>
                     <group>
@@ -26,4 +28,9 @@
             </form>
         </field>
     </record>
+    <menuitem id="menu_complaint_list"
+              name="Llista de Reclamacions"
+              parent="menu_complaint_root"
+              action="complaint_action"
+              sequence="20"/>
 </odoo>

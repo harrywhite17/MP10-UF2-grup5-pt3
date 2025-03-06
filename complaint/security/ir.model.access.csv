@@ -1,3 +1,6 @@
 id,name,model_id/id,group_id/id,perm_read,perm_write,perm_create,perm_unlink
-access_sale_order,access_sale_order,model_sale_order,base.group_user,1,0,0,0
-access_complaint_security,access_complaint_security,model_complaint_message,base.group_user,1,0,0,0
+access_sale_order,access_sale_order,model_sale_order,base.group_user,1,1,1,1
+access_complaint_message_user,access_complaint_message_user,model_complaint_message,base.group_user,1,1,1,1
+access_complaint_reason_user,access_complaint_reason_user,model_complaint_reason,base.group_user,1,0,1,0
+access_complaint_reason_admin,access_complaint_reason_admin,model_complaint_reason,base.group_system,1,1,1,1
+access_complaint_complaint_user,access_complaint_complaint_user,model_complaint_complaint,base.group_user,1,1,1,1

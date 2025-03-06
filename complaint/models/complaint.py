@@ -1,4 +1,6 @@
 from odoo import models, fields, api
+from odoo import exceptions
+
 
 class Complaint(models.Model):
     _name = 'complaint.complaint'
@@ -43,3 +45,42 @@ class Complaint(models.Model):
             if not rec.reason_id:
                 raise models.ValidationError("S'ha de seleccionar un motiu per a cancel·lar la reclamació.")
             rec.state = 'cancelled'
+
+    @api.model
+    def create(self, vals):
+        if 'order_id' in vals:
+            order_id = vals['order_id']
+            open_complaints = self.search_count([
+                ('order_id', '=', order_id),
+                ('state', 'in', ['new', 'in_progress'])
+            ])
+            if open_complaints > 0:
+                raise exceptions.UserError("Ja hi ha una reclamació oberta per aquesta comanda de venda.")
+        return super().create(vals)
+
+    def write(self, vals):
+        if 'state' in vals and vals['state'] in ['new', 'in_progress']:
+            for rec in self:
+                open_complaints = self.search_count([
+                    ('order_id', '=', rec.order_id.id),
+                    ('state', 'in', ['new', 'in_progress']),
+                    ('id', '!=', rec.id)
+                ])
+                if open_complaints > 0:
+                    raise exceptions.UserError("Ja hi ha una altra reclamació oberta per aquesta comanda de venda.")
+        return super().write(vals)
+
+    def action_reopen(self):
+        for rec in self:
+            if rec.state not in ['closed', 'cancelled']:
+                raise exceptions.UserError("Aquesta reclamació no està tancada ni cancel·lada. No es pot reobrir.")
+            open_complaints = self.search_count([
+                ('order_id', '=', rec.order_id.id),
+                ('state', 'in', ['new', 'in_progress']),
+                ('id', '!=', rec.id)
+            ])
+            if open_complaints > 0:
+                raise exceptions.UserError("Ja hi ha una altra reclamació oberta per aquesta comanda de venda.")
+            new_state = 'in_progress' if rec.message_ids else 'new'
+            rec.state = new_state
+            rec.reason_id = False

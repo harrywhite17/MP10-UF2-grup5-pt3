@@ -1,22 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <menuitem id="menu_complaint_root" name="Reclamacions" sequence="10"/>
+
     <record id="complaint_action" model="ir.actions.act_window">
         <field name="name">Reclamacions</field>
         <field name="res_model">complaint.complaint</field>
         <field name="view_mode">list,form</field>
     </record>
 
+    <record id="view_complaint_list" model="ir.ui.view">
+        <field name="name">complaint.complaint.list</field>
+        <field name="model">complaint.complaint</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="description"/>
+                <field name="state"/>
+                <field name="invoice_count"/>
+                <field name="delivery_count"/>
+            </list>
+        </field>
+    </record>
+
     <record id="view_complaint_form" model="ir.ui.view">
-        <field name="name">complaint.form</field>
+        <field name="name">complaint.complaint.form</field>
         <field name="model">complaint.complaint</field>
         <field name="arch" type="xml">
             <form string="Complaint">
                 <header>
                     <field name="state" widget="statusbar" statusbar_visible="new,in_progress,closed,cancelled"/>
-                    <button name="action_reopen" string="Reobrir" type="object" invisible_when="state not in ('closed', 'cancelled')"/>
+                    <button name="action_reopen" string="Reobrir" type="object" condition="state in ('closed', 'cancelled')"/>
                 </header>
                 <sheet>
                     <group>
+                        <field name="order_id" required="1"/>
                         <field name="name"/>
                         <field name="description"/>
                     </group>
@@ -28,6 +45,7 @@
             </form>
         </field>
     </record>
+
     <menuitem id="menu_complaint_list"
               name="Llista de Reclamacions"
               parent="menu_complaint_root"

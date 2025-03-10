@@ -2,7 +2,7 @@
  "name": "Reclamacions",
  "version": "1.0",
  "application": True,
- "depends": ["base", "sale"],
+ "depends": ["base", "sale", "stock", "account"],
  "data": [
     'security/ir.model.access.csv',
     'views/complaint_views.xml',

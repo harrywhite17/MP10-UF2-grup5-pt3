@@ -24,16 +24,18 @@ class Complaint(models.Model):
     close_date = fields.Datetime(string="Data de Tancament", readonly=True)
     
     message_ids = fields.One2many('complaint.message', 'complaint_id', string="Missatges")
-    invoice_count = fields.Integer(string="Factures Associades", compute="_compute_invoice_count")
+    invoice_count = fields.Integer(compute='_compute_invoice_count', string='Factures associades')
     delivery_count = fields.Integer(string="Enviaments Associats", compute="_compute_delivery_count")
     
     resolution = fields.Text(string="Descripció de la Resolució Final")
     reason_id = fields.Many2one('complaint.reason', string="Motiu de Tancament/Cancel·lació")
 
-    @api.depends('order_id')
     def _compute_invoice_count(self):
-        for rec in self:
-            rec.invoice_count = len(rec.order_id.invoice_ids)
+        for record in self:
+            if record.order_id and hasattr(record.order_id, 'invoice_ids'):
+                record.invoice_count = len(record.order_id.invoice_ids)
+            else:
+                record.invoice_count = 0
 
     @api.depends('order_id')
     def _compute_delivery_count(self):
@@ -48,14 +50,16 @@ class Complaint(models.Model):
 
     @api.model
     def create(self, vals):
-        if 'order_id' in vals:
-            order_id = vals['order_id']
-            open_complaints = self.search_count([
-                ('order_id', '=', order_id),
-                ('state', 'in', ['new', 'in_progress'])
-            ])
-            if open_complaints > 0:
-                raise exceptions.UserError("Ja hi ha una reclamació oberta per aquesta comanda de venda.")
+        if 'order_id' in vals and not vals.get('partner_id'):
+            order = self.env['sale.order'].browse(vals['order_id'])
+            if order.partner_id:
+                vals['partner_id'] = order.partner_id.id
+        open_complaints = self.search_count([
+            ('order_id', '=', vals.get('order_id')),
+            ('state', 'in', ['new', 'in_progress'])
+        ])
+        if open_complaints > 0:
+            raise exceptions.UserError("Ja hi ha una reclamació oberta per aquesta comanda de venda.")
         return super().create(vals)
 
     def write(self, vals):

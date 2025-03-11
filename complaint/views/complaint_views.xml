@@ -29,8 +29,9 @@
             <form string="Complaint">
                 <header>
                     <field name="state" widget="statusbar" statusbar_visible="new,in_progress,closed,cancelled"/>
-                    <button name="action_reopen" string="Reobrir" type="object" modifiers="{'invisible': [('state', 'not in', ['closed', 'cancelled'])]}"/>
-                    <button name="action_cancel" string="Cancel·lar" type="object" modifiers="{'invisible': [('state', 'not in', ['new', 'in_progress'])]}"/>
+                    <button name="action_reopen" string="Reobrir" type="object" invisible="state != ['closed','cancelled']"/>
+                    <button name="action_close" string="Tancar" type="object" invisible="state != 'in_progress'"/>
+                    <button name="action_cancel" string="Cancel·lar" type="object"/>
                 </header>
                 <sheet>
                     <group>
@@ -40,6 +41,7 @@
                         <field name="partner_id"/>
                         <field name="user_id"/>
                         <field name="create_date"/>
+                        <field name="close_date" invisible="state != 'closed'"/>
                         <field name="message_ids" readonly="1">
                             <list>
                                 <field name="text"/>

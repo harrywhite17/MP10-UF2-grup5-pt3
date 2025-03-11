@@ -48,6 +48,13 @@ class Complaint(models.Model):
                 raise models.ValidationError("S'ha de seleccionar un motiu per a cancel·lar la reclamació.")
             rec.state = 'cancelled'
 
+    def action_close(self):
+        for rec in self:
+            if not rec.reason_id:
+                raise models.ValidationError("S'ha de seleccionar un motiu per a tancar la reclamació.")
+            rec.state = 'closed'
+            rec.close_date = fields.Datetime.now()
+
     @api.model
     def create(self, vals):
         if 'order_id' in vals and not vals.get('partner_id'):

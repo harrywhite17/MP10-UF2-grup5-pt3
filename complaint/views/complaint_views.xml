@@ -29,9 +29,9 @@
             <form string="Complaint">
                 <header>
                     <field name="state" widget="statusbar" statusbar_visible="new,in_progress,closed,cancelled"/>
-                    <button name="action_reopen" string="Reobrir" type="object" invisible="state != ['closed','cancelled']"/>
+                    <button name="action_reopen" string="Reobrir" type="object" invisible="state not in ('cancelled', 'closed')"/>
                     <button name="action_close" string="Tancar" type="object" invisible="state != 'in_progress'"/>
-                    <button name="action_cancel" string="Cancel·lar" type="object"/>
+                    <button name="action_cancel" string="Cancel·lar" type="object" invisible="state in ('new','cancelled', 'closed')"/>
                 </header>
                 <sheet>
                     <group>

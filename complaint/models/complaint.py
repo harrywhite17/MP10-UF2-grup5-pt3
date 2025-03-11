@@ -54,6 +54,7 @@ class Complaint(models.Model):
                 raise models.ValidationError("S'ha de seleccionar un motiu per a tancar la reclamació.")
             rec.state = 'closed'
             rec.close_date = fields.Datetime.now()
+            rec.resolution = "Descripció de la resolució final"
 
     @api.model
     def create(self, vals):

@@ -31,7 +31,7 @@
                     <field name="state" widget="statusbar" statusbar_visible="new,in_progress,closed,cancelled"/>
                     <button name="action_reopen" string="Reobrir" type="object" invisible="state not in ('cancelled', 'closed')"/>
                     <button name="action_close" string="Tancar" type="object" invisible="state != 'in_progress'"/>
-                    <button name="action_cancel" string="Cancel·lar" type="object" invisible="state in ('new','cancelled', 'closed')"/>
+                    <button name="action_cancel" string="Cancel·lar" type="object" invisible="state in ('cancelled', 'closed')"/>
                 </header>
                 <sheet>
                     <group>
@@ -55,7 +55,10 @@
                         <field name="delivery_count" widget="statinfo" icon="fa-truck"/>
                     </group>
                     <group>
-                        <field name="reason_id" string="Motiu de Cancel·lació/Tancament" modifiers="{'invisible': [('state', 'not in', ['cancelled', 'closed'])]}" required="1" options="{'no_create': True}"/>                    </group>
+                        <field name="reason_id" string="Motiu de Cancel·lació/Tancament" modifiers="{'invisible': [('state', 'not in', ['cancelled', 'closed'])]}" required="1" options="{'no_create': True}"/>
+                        <field name="resolution" string="Descripció de la Resolució Final" invisible="state not in ('closed')"/>
+
+                    </group>
                 </sheet>
             </form>
         </field>

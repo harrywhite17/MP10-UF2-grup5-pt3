@@ -30,6 +30,8 @@
                 <header>
                     <field name="state" widget="statusbar" statusbar_visible="new,in_progress,closed,cancelled"/>
                     <button name="action_reopen" string="Reobrir" type="object" condition="state in ('closed', 'cancelled')"/>
+                    <button name="action_cancel" string="Cancel·lar" type="object" condition="state in ('new', 'in_progress')"/>
+
                 </header>
                 <sheet>
                     <group>

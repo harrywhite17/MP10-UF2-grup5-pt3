@@ -29,13 +29,24 @@
             <form string="Complaint">
                 <header>
                     <field name="state" widget="statusbar" statusbar_visible="new,in_progress,closed,cancelled"/>
-                    <button name="action_reopen" string="Reobrir" type="object" condition="state in ('closed', 'cancelled')"/>
+                    <button name="action_reopen" string="Reobrir" type="object" invisible="state not in ('closed', 'cancelled')"/>
+                    <button name="action_cancel" string="Cancel·lar" condition="state in ('new', 'in_progress')"/>
                 </header>
                 <sheet>
                     <group>
                         <field name="order_id" required="1"/>
                         <field name="name"/>
                         <field name="description"/>
+                        <field name="partner_id"/>
+                        <field name="user_id"/>
+                        <field name="create_date"/>
+                        <field name="message_ids" readonly="1">
+                            <list>
+                                <field name="text"/>
+                                <field name="author_id"/>
+                                <field name="date"/>
+                            </list>
+                        </field>
                     </group>
                     <group>
                         <field name="invoice_count" widget="statinfo" icon="fa-money"/>

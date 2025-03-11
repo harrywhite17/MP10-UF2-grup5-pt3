@@ -17,7 +17,8 @@ class ComplaintMessage(models.Model):
         """Evitar modificacions posteriors fent que els missatges siguin immutables"""
         records = super().create(vals_list)
         for record in records:
-            record._lock_message()
+            if record.complaint_id.state == 'new':
+                record.complaint_id.state = 'in_progress'
         return records
 
     def write(self, vals):

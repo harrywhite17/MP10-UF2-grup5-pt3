@@ -29,9 +29,8 @@
             <form string="Complaint">
                 <header>
                     <field name="state" widget="statusbar" statusbar_visible="new,in_progress,closed,cancelled"/>
-                    <button name="action_reopen" string="Reobrir" type="object" condition="state in ('closed', 'cancelled')"/>
-                    <button name="action_cancel" string="Cancel·lar" type="object" condition="state in ('new', 'in_progress')"/>
-
+                    <button name="action_reopen" string="Reobrir" type="object" modifiers="{'invisible': [('state', 'not in', ['closed', 'cancelled'])]}"/>
+                    <button name="action_cancel" string="Cancel·lar" type="object" modifiers="{'invisible': [('state', 'not in', ['new', 'in_progress'])]}"/>
                 </header>
                 <sheet>
                     <group>
@@ -53,6 +52,8 @@
                         <field name="invoice_count" widget="statinfo" icon="fa-money"/>
                         <field name="delivery_count" widget="statinfo" icon="fa-truck"/>
                     </group>
+                    <group>
+                        <field name="reason_id" string="Motiu de Cancel·lació/Tancament" modifiers="{'invisible': [('state', 'not in', ['cancelled', 'closed'])]}" required="1" options="{'no_create': True}"/>                    </group>
                 </sheet>
             </form>
         </field>

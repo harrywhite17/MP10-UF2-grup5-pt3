@@ -56,6 +56,14 @@ class Complaint(models.Model):
             rec.close_date = fields.Datetime.now()
             rec.resolution = "Descripció de la resolució final"
 
+    def action_cancel_sale_command(self):
+        """Cancela la orden de venta vinculada."""
+        for record in self:
+            if record.sale_order_id:
+                record.sale_order_id.action_cancel()
+            else:
+                raise exceptions.UserError("No hay ninguna orden de venta vinculada para cancelar.")
+
     @api.model
     def create(self, vals):
         if 'order_id' in vals and not vals.get('partner_id'):

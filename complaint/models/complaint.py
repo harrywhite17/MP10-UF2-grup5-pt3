@@ -1,6 +1,4 @@
-from odoo import models, fields, api
-from odoo import exceptions
-
+from odoo import models, fields, api, exceptions
 
 class Complaint(models.Model):
     _name = 'complaint.complaint'
@@ -57,12 +55,33 @@ class Complaint(models.Model):
             rec.resolution = "Descripció de la resolució final"
 
     def action_cancel_sale_command(self):
-        """Cancela la orden de venta vinculada."""
-        for record in self:
-            if record.sale_order_id:
-                record.sale_order_id.action_cancel()
-            else:
-                raise exceptions.UserError("No hay ninguna orden de venta vinculada para cancelar.")
+        """Cancel·la la comanda de venda vinculada."""
+        self.ensure_one()  # Assegura que s'executi en un sol registre
+        if not self.order_id:
+            raise exceptions.UserError("No hi ha cap comanda de venda vinculada per cancel·lar.")
+
+        sale_order = self.env['sale.order'].browse(self.order_id.id)
+
+        # Verificar si hi ha factures publicades associades
+        if sale_order.invoice_ids:
+            posted_invoices = sale_order.invoice_ids.filtered(lambda inv: inv.state == 'posted')
+            if posted_invoices:
+                raise exceptions.UserError(
+                    "No es pot cancel·lar la comanda de venda perquè té factures publicades associades."
+                )
+
+        # Verificar l'estat de la comanda
+        if sale_order.state == 'cancel':
+            raise exceptions.UserError("La comanda de venda ja està cancel·lada.")
+
+        # Cridar al mètode action_cancel i capturar-ne el resultat
+        result = sale_order.action_cancel()
+
+        if isinstance(result, dict) and result.get('type') == 'ir.actions.act_window':
+            return result
+
+        if sale_order.state != 'cancel':
+            raise exceptions.UserError("No s'ha pogut cancel·lar la comanda de venda.")
 
     @api.model
     def create(self, vals):

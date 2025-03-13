@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_order_form_with_complaints" model="ir.ui.view">
+        <field name="name">sale.order.form.with.complaints</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <!-- Afegim les reclamacions dins de la pestanya 'Altres informacions' -->
+            <xpath expr="//notebook/page[@name='other_information']" position="inside">
+                <group string="Reclamacions">
+                    <field name="complaint_ids" nolabel="1" readonly="1">
+                        <list>
+                            <field name="name" string="Assumpte"/>
+                            <field name="state" string="Estat"/>
+                            <field name="create_date" string="Data de Creació"/>
+                        </list>
+                        <form>
+                            <!-- Aquí pots reutilitzar la mateixa vista del teu formulari de reclamacions -->
+                            <field name="name" string="Assumpte"/>
+                            <field name="description" string="Descripció"/>
+                            <field name="state" string="Estat"/>
+                            <field name="partner_id" string="Client"/>
+                            <field name="reason_id" string="Motiu"/>
+                        </form>
+                    </field>
+                </group>
+            </xpath>
+        </field>
+    </record>
+</odoo>

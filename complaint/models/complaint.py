@@ -98,6 +98,7 @@ class Complaint(models.Model):
         return super().create(vals)
 
     def write(self, vals):
+        vals['write_date'] = fields.Datetime.now()
         if 'state' in vals and vals['state'] in ['new', 'in_progress']:
             for rec in self:
                 open_complaints = self.search_count([

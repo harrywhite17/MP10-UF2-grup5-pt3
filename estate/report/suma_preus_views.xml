@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Vista de llista -->
+    <record id="view_report_suma_preus_estat_list" model="ir.ui.view">
+        <field name="name">report.suma.preus.estat.list</field>
+        <field name="model">report.suma.preus.estat</field>
+        <field name="arch" type="xml">
+            <list string="Suma de preus d'ofertes per estat i comercial" create="false" delete="false" edit="false">
+                <field name="commercial_id" string="Comercial"/>
+                <field name="state" string="Estat"/>
+                <field name="suma_preus" string="Suma de preus" sum="Total"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Vista de cerca -->
+    <record id="view_report_suma_preus_estat_search" model="ir.ui.view">
+        <field name="name">report.suma.preus.estat.search</field>
+        <field name="model">report.suma.preus.estat</field>
+        <field name="arch" type="xml">
+            <search string="Cerca al report de suma de preus">
+                <field name="commercial_id"/>
+                <field name="state"/>
+                <group expand="1" string="Agrupar per">
+                    <filter name="by_commercial" string="Comercial" domain="[]" context="{'group_by': 'commercial_id'}"/>
+                    <filter name="by_state" string="Estat" domain="[]" context="{'group_by': 'state'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Acció de finestra -->
+    <record id="action_report_suma_preus_estat" model="ir.actions.act_window">
+        <field name="name">Suma de preus d'ofertes per estat i comercial</field>
+        <field name="res_model">report.suma.preus.estat</field>
+        <field name="view_mode">list</field>
+        <field name="view_id" ref="view_report_suma_preus_estat_list"/>
+        <field name="search_view_id" ref="view_report_suma_preus_estat_search"/>
+    </record>
+</odoo>
